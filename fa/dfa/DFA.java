@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
+//@fixit remember to do coments and inline coments
 public class DFA implements DFAInterface{
     
         private Set<State> state;
