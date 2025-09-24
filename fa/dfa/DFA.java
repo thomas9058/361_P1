@@ -3,6 +3,8 @@ import com.sun.net.httpserver.Authenticator;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,10 +19,10 @@ public class DFA implements DFAInterface{
         private String initial;
 
     public DFA(){
-        this.state = new HashSet<>();
-        this.delta = new HashMap<>();
-        this.sigma = new HashSet<>();
-        this.finalState = new HashSet<>();
+        this.state = new LinkedHashSet<>();
+        this.delta = new LinkedHashMap<>();
+        this.sigma = new LinkedHashSet<>();
+        this.finalState = new LinkedHashSet<>();
         this.initial = null;
     }
 
@@ -29,13 +31,12 @@ public class DFA implements DFAInterface{
         boolean success = false;
         if(getState(fromState) != null && getState(toState) != null
             && sigma.contains(onSymb)){
-                delta.putIfAbsent(fromState, new HashMap<>());
+                delta.putIfAbsent(fromState, new LinkedHashMap<>());
                 delta.get(fromState).put(toState, onSymb);
-                delta.put(fromState, innerMap);
             success= true;
         }
         return success;
-
+        //@FIXIT, DELETE
         //References
         //https://howtodoinjava.com/java/collections/hashmap/java-nested-map/#:~:text=Creating%20Nested%20Map%20using%20Map,()%3B%20addressMap.
     }
@@ -107,14 +108,43 @@ public class DFA implements DFAInterface{
         return isFinal != null;
     }
 
-    @Override //@FIXIT override
+    @Override
     public boolean isStart(String name) {
         return name.equals(initial);
     }
     
-        @Override //@FIXIT override
+    @Override //@FIXIT override
     public String toString() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toString'");
+        StringBuilder fullDFA = null;
+        fullDFA.append("Q = { ");
+        for (String states : state){
+            fullDFA.append(states + " ");
+        }
+        fullDFA.append("}\n");
+        fullDFA.append("Sigma = {");
+        for (char sigmas : sigma){
+            fullDFA.append(sigmas + " ");
+        }
+        fullDFA.append("}\n");
+        fullDFA.append("delta =\n");
+        fullDFA.append( "   ");
+        for (char sigmas : sigma){
+            fullDFA.append("   " + sigmas);
+        }
+        for(Map.Entry<String, Map<String, Character>> deltas : delta.entrySet()){
+            Map<String, Character> valueDelta = deltas.getValue();
+            fullDFA.append("    " + deltas.getKey());
+            for(Map.Entry<String, Character> innerDelta : valueDelta.entrySet()){
+                fullDFA.append("    " + innerDelta.getKey());
+            }
+            fullDFA.append("\n");
+        }
+        fullDFA.append("q0 = " + initial);
+        fullDFA.append("\nF = { ");
+            for (String finals : finalState){
+            fullDFA.append(finals + " ");
+        }
+        fullDFA.append("}\n");
+        return fullDFA.toString();
     }
 }
