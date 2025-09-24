@@ -53,8 +53,7 @@ public class DFA implements DFAInterface{
         boolean success = false;
         if(getState(name) == null){
             State newState = new State(name);
-            state.add(newState);
-            success = true;
+            success = state.add(newState);
         }
         return success;
     }
@@ -63,8 +62,7 @@ public class DFA implements DFAInterface{
     public boolean setFinal(String name) {
         Boolean success = false;
         if(getState(name) != null){
-            finalState.add(name);
-            success = true;
+            success = finalState.add(new State(name));
         }
         return success;
     }
@@ -119,8 +117,8 @@ public class DFA implements DFAInterface{
     public String toString() {
         StringBuilder fullDFA = null;
         fullDFA.append("Q = { ");
-        for (String states : state){
-            fullDFA.append(states + " ");
+        for (State states : state){
+            fullDFA.append(states.toString() + " ");
         }
         fullDFA.append("}\n");
         fullDFA.append("Sigma = {");
@@ -143,8 +141,8 @@ public class DFA implements DFAInterface{
         }
         fullDFA.append("q0 = " + initial);
         fullDFA.append("\nF = { ");
-            for (String finals : finalState){
-            fullDFA.append(finals + " ");
+            for (State finals : finalState){
+            fullDFA.append(finals.toString() + " ");
         }
         fullDFA.append("}\n");
         return fullDFA.toString();
