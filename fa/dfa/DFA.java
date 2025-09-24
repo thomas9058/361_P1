@@ -1,3 +1,7 @@
+package fa.dfa;
+
+import fa.State;
+import fa.dfa.DFAInterface;
 
 import com.sun.net.httpserver.Authenticator;
 
@@ -7,8 +11,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
-import fa.dfa.DFAInterface;
 
 public class DFA implements DFAInterface{
     
