@@ -45,7 +45,34 @@ public class DFA implements DFAInterface{
 
     @Override
     public DFA swap(char symb1, char symb2) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        DFA newDFA = new DFA(); 
+        //Creates bew DFA that will have everything the same except the swapped transitions
+        newDFA.state = new LinkedHashSet<>(this.state);
+        newDFA.sigma = new LinkedHashSet<>(this.sigma);
+        newDFA.finalState = new LinkedHashSet<>(this.finalState);
+        newDFA.initial = this.initial;
+        newDFA.delta = new LinkedHashMap<>();
+        //Initialize the 5-tuple and right after enters a loop for delta
+        for(String newState : this.delta.keySet()){ // Gets the keys for all the deltas aka their states
+            Map<String, Character> mapDelta = this.delta.get(newState); //Creates a new map with the state that w egot
+            Map<String, Character> swappedDelta = new LinkedHashMap<>(); //New Map for the swapped delta
+            for(Map.Entry<String, Character> innerDelta : mapDelta.entrySet()){ //Enters loop for the inner delta
+                
+                char symbol = innerDelta.getValue(); //Gets the value aka the alphabet
+                String stateToSwap = innerDelta.getKey(); //Gets the key aka the state
+                
+                if(symbol == symb1){ // if we have the symbol we got the same as the symb1
+                    swappedDelta.put(stateToSwap, symb2); //then we put inside the swapped delta the inverse
+                } else if(symb2 == symbol){ //otherwise we swap too since second symbol isthe same
+                    swappedDelta.put(stateToSwap, symb1); 
+                } else{ //if not, we just put it as is
+                    swappedDelta.put(stateToSwap, symbol);
+                }
+            }
+            newDFA.delta.put(newState, mapDelta);
+        }
+
+        return newDFA;
     }
 
     @Override
@@ -113,34 +140,35 @@ public class DFA implements DFAInterface{
         return name.equals(initial);
     }
     
-    @Override //@FIXIT override
+    @Override
     public String toString() {
+        //New SB created to append all the values
         StringBuilder fullDFA = null;
         fullDFA.append("Q = { ");
-        for (State states : state){
+        for (State states : state){ //loop so that it can go over every single state on the set
             fullDFA.append(states.toString() + " ");
         }
         fullDFA.append("}\n");
         fullDFA.append("Sigma = {");
-        for (char sigmas : sigma){
+        for (char sigmas : sigma){ //loop so it can go over every single character on the set
             fullDFA.append(sigmas + " ");
         }
         fullDFA.append("}\n");
         fullDFA.append("delta =\n");
         fullDFA.append( "   ");
-        for (char sigmas : sigma){
+        for (char sigmas : sigma){ //loop so it can go over every single chracter again, but now to build delta
             fullDFA.append("   " + sigmas);
         }
         for(Map.Entry<String, Map<String, Character>> deltas : delta.entrySet()){
             Map<String, Character> valueDelta = deltas.getValue();
-            fullDFA.append("    " + deltas.getKey());
+            fullDFA.append("    " + deltas.getKey()); //put the outside/corner states
             for(Map.Entry<String, Character> innerDelta : valueDelta.entrySet()){
-                fullDFA.append("    " + innerDelta.getKey());
+                fullDFA.append("    " + innerDelta.getKey()); // put the inside states
             }
             fullDFA.append("\n");
         }
         fullDFA.append("q0 = " + initial);
-        fullDFA.append("\nF = { ");
+        fullDFA.append("\nF = { "); // loop to go over all final states
             for (State finals : finalState){
             fullDFA.append(finals.toString() + " ");
         }
