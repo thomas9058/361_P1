@@ -2,6 +2,8 @@ package test.dfa;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
@@ -10,6 +12,10 @@ import fa.dfa.DFA;
 
 public class DFATest {
 	
+	// helper to replace Set.of(...) for Java 8 compatability
+	private static Set<Character> chars(Character... cs) {
+    return new HashSet<>(Arrays.asList(cs));
+}
 	
 	//------------------- dfa1 tests ----------------------//
 	private DFA dfa1() {
@@ -53,7 +59,7 @@ public class DFATest {
 		assertNotNull(dfa.getState("b"));
 		assertEquals(dfa.getState("b").getName(),"b");
 		assertTrue(dfa.isFinal("b"));
-		assertEquals(dfa.getSigma(), Set.of('0','1'));
+		assertEquals(dfa.getSigma(), chars('0','1'));
 		
 		System.out.println("dfa1 correctness pass");
 	}
@@ -179,7 +185,7 @@ public class DFATest {
 		assertNotNull(dfa.getState("3"));
 		assertEquals(dfa.getState("3").getName(),"3");
 		assertTrue(dfa.isFinal("3"));
-		assertEquals(dfa.getSigma(), Set.of('0','1'));
+		assertEquals(dfa.getSigma(), chars('0','1'));
 		
 		System.out.println("dfa2 correctness pass");
 	}
@@ -330,7 +336,7 @@ public void test3_2() {
 	assertEquals(dfa.getState("E").getName(),"E");
 	assertTrue(dfa.isFinal("G"));
 	assertFalse(dfa.isFinal("B"));
-	assertEquals(dfa.getSigma(), Set.of('2','1'));
+	assertEquals(dfa.getSigma(), chars('2','1'));
 
 	System.out.println("dfa3 correctness pass");
 }
