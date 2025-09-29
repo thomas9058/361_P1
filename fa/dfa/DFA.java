@@ -15,7 +15,7 @@ import java.util.Set;
 public class DFA implements DFAInterface{
     
         private Set<State> state;
-        private Map<String, Map<String, Character>> delta;
+        private Map<String, Map<Character, String>> delta;
         private Set<Character> sigma;
         private Set<State> finalState;
         private String initial;
@@ -34,7 +34,7 @@ public class DFA implements DFAInterface{
         if(getState(fromState) != null && getState(toState) != null
             && sigma.contains(onSymb)){
                 delta.putIfAbsent(fromState, new LinkedHashMap<>());
-                delta.get(fromState).put(toState, onSymb);
+                delta.get(fromState).put(onSymb, toState);
             success= true;
         }
         return success;
@@ -54,19 +54,19 @@ public class DFA implements DFAInterface{
         newDFA.delta = new LinkedHashMap<>();
         //Initialize the 5-tuple and right after enters a loop for delta
         for(String newState : this.delta.keySet()){ // Gets the keys for all the deltas aka their states
-            Map<String, Character> mapDelta = this.delta.get(newState); //Creates a new map with the state that w egot
-            Map<String, Character> swappedDelta = new LinkedHashMap<>(); //New Map for the swapped delta
-            for(Map.Entry<String, Character> innerDelta : mapDelta.entrySet()){ //Enters loop for the inner delta
+            Map<Character, String> mapDelta = this.delta.get(newState); //Creates a new map with the state that w egot
+            Map<Character, String> swappedDelta = new LinkedHashMap<>(); //New Map for the swapped delta
+            for(Map.Entry<Character, String> innerDelta : mapDelta.entrySet()){ //Enters loop for the inner delta
                 
-                char symbol = innerDelta.getValue(); //Gets the value aka the alphabet
-                String stateToSwap = innerDelta.getKey(); //Gets the key aka the state
+                char symbol = innerDelta.getKey(); //Gets the key aka the alphabet
+                String stateToSwap = innerDelta.getValue(); //Gets the value aka the state
                 
                 if(symbol == symb1){ // if we have the symbol we got the same as the symb1
-                    swappedDelta.put(stateToSwap, symb2); //then we put inside the swapped delta the inverse
+                    swappedDelta.put(symb2, stateToSwap); //then we put inside the swapped delta the inverse
                 } else if(symb2 == symbol){ //otherwise we swap too since second symbol isthe same
-                    swappedDelta.put(stateToSwap, symb1); 
+                    swappedDelta.put(symb1, stateToSwap); 
                 } else{ //if not, we just put it as is
-                    swappedDelta.put(stateToSwap, symbol);
+                    swappedDelta.put(symbol, stateToSwap);
                 }
             }
             newDFA.delta.put(newState, mapDelta);
@@ -111,8 +111,24 @@ public class DFA implements DFAInterface{
 
     @Override
     public boolean accepts(String s) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'accepts'");
+        boolean success = false;
+        String newState = initial;
+        for(int i = 0; i < s.length(); i++){ //Loop that will run the entire string
+            char sigmaChar = s.charAt(i);
+            Map<Character, String> trans = delta.get(newState); // Gets the transition related to the initial state
+                                                                // then later, to any followed states
+
+            if (sigma.contains(sigmaChar) != true || trans == null || trans.containsValue(sigmaChar) != true){
+                //will return null if the character is null
+                // if the transition itself at null, meaning that there is no transition related to that char
+                // and finally, if the DFA does not accept the string
+                success = false;
+                break; // leaves loop
+            }
+            newState = trans.get(sigmaChar); //gets the next state
+            success = true;
+        }
+        return success;
     }
 
     @Override
@@ -159,10 +175,10 @@ public class DFA implements DFAInterface{
         for (char sigmas : sigma){ //loop so it can go over every single chracter again, but now to build delta
             fullDFA.append("   " + sigmas);
         }
-        for(Map.Entry<String, Map<String, Character>> deltas : delta.entrySet()){
-            Map<String, Character> valueDelta = deltas.getValue();
+        for(Map.Entry<String, Map<Character, String>> deltas : delta.entrySet()){
+            Map<Character, String> valueDelta = deltas.getValue();
             fullDFA.append("    " + deltas.getKey()); //put the outside/corner states
-            for(Map.Entry<String, Character> innerDelta : valueDelta.entrySet()){
+            for(Map.Entry<Character, String> innerDelta : valueDelta.entrySet()){
                 fullDFA.append("    " + innerDelta.getKey()); // put the inside states
             }
             fullDFA.append("\n");
