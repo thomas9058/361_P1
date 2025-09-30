@@ -9,7 +9,7 @@ import fa.State;
 /**
  * concrete state used by DFA
  * 
- * @author Thomas Pengelly
+ * @author Dalton Bilau Goncalves, Thomas Pengelly
  */
 public class DFAState extends State {
 

@@ -1,34 +1,45 @@
-# Project #: Project Name
+# Project 1: Deterministic Finite Automata
 
-* Author: Dalton Bilau Goncalves & Thomas
-* Class: CS361 Section 002
-* Semester: Fall 2025
+* **Authors**: Dalton Bilau Goncalves & Thomas Pengelly
+* **Class**: CS361 Section 001
+* **Semester**: Fall 2025
 
 ## Overview
 
-This program models a deterministic finite automaton (DFA).
+This program models a deterministic finite automata (DFA).
 Through the use of different classes and packages it imitates
 the entirety of a DFA by including states, possible transtions
 and allows the user to create its own DFA and test it.
 
 ## Reflection
 
-@FIXIT
-Write a brief (2-3 paragraph) reflection describing your experience with this 
-project. Answer the following questions (but feel free to add other insights): 
-- What worked well and what was a struggle?
-- What concepts still aren't quite clear?
-- What techniques did you use to make your code easy to debug and modify?
-- What would you change about your design process?
-- If you could go back in time, what would you tell yourself about doing this project?
+The project was well structured. We thought this project was a good way to add a more concrete idea on how a DFA is made and how its connections can be applied inside an actual code. The biggest struggle we had at first was figuring out how to use the Map and use inner maps to store all the transitions, we had to do some research to better understand it well and read the class well before being able to implement it. There were no concepts that were not clear per say.
+
+A technique that was used to make the code easy to debug and modify was working on pieces of code at a time, writing it down on a piece of paper to make sure it'd make sense, and document everything properly. We did not think there was much on the design process that would have to be changed, however, we though it would be nice, if we could go back in time, to try and work the logic better as a team so as to understand any bugs or errors that were created. Perhaps starting earlier 
+as well is always a beneficial strategy. This was a great project overall, it was challenging, and ties into the work 
+we have been doing in class perfectly.
 
 ## Compiling and Using 
-@FIXIT
 
-This section should tell the user how to compile your code.  It is
-also appropriate to instruct the user how to use your code. Does your
-program require user input? If so, what does your user need to know
-about it to use it as quickly as possible?
+### Prerequisite:
+
+Connect to Boise State Onyx Server.
+
+### Compile Tests:
+From the project root:
+```bash
+[you@onyx]$ javac -cp .:/usr/share/java/junit.jar ./test/dfa/DFATest.java
+```
+
+### Run Tests:
+```bash
+[you@onyx]$ java -cp .:/usr/share/java/junit.jar:/usr/share/java/hamcrest/hamcrest.jar org.junit.runner.JUnitCore test.dfa.DFATest
+```
+
+### Generate Javadoc
+```bash
+javadoc -d doc -cp . fa.dfa
+```
 
 ## Sources used
 
